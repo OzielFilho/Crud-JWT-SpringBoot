@@ -1,13 +1,22 @@
 package com.lum.projetoTJW.models;
 
+import javax.persistence.*;
 import java.util.List;
-
+@Entity
+@Table(name = "tb_turma")
 public class Turma {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nomeTurma;
-    private List<Aluno> alunos;
 
+    @Column(name = "nome_turma")
+    private String nomeTurma;
+
+//    @OneToMany(mappedBy = "turma")
+//    private List<Aluno> alunos;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
     private Professor professor;
 
     public Turma(){
@@ -29,13 +38,13 @@ public class Turma {
         this.nomeTurma = nomeTurma;
     }
 
-    public List<Aluno> getAlunos() {
-        return alunos;
-    }
-
-    public void setAlunos(List<Aluno> alunos) {
-        this.alunos = alunos;
-    }
+//    public List<Aluno> getAlunos() {
+//        return alunos;
+//    }
+//
+//    public void setAlunos(List<Aluno> alunos) {
+//        this.alunos = alunos;
+//    }
 
     public Professor getProfessor() {
         return professor;

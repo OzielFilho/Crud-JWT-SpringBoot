@@ -1,13 +1,15 @@
 package com.lum.projetoTJW.models;
 
+import javax.persistence.*;
 import java.util.List;
-
+@Entity
+@Table(name = "tb_professor")
 public class Professor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String email;
-
-    private List<Turma> turmas;
 
     public Professor() {
     }
@@ -34,16 +36,6 @@ public class Professor {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public List<Turma> getTurmas() {
-        return turmas;
-    }
-
-    public void setTurmas(List<Turma> turmas) {
-        this.turmas = turmas;
-    }
-
-
 
 
 }
