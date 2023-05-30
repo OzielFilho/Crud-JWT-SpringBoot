@@ -1,28 +1,30 @@
 package com.lum.projetoTJW.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_aluno")
 public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String nome;
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "turma_id")
-    private Turma turma;
+    @ManyToMany
+    @JoinTable(name = "aluno_turma",
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name="turma_id"))
+    private List<Turma> turmas;
 
     public Aluno() {
     }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -42,15 +44,11 @@ public class Aluno {
         this.email = email;
     }
 
-    public Turma getTurma() {
-        return turma;
+    public List<Turma> getTurmas() {
+        return turmas;
     }
 
-    public void setTurma(Turma turma) {
-        this.turma = turma;
+    public void setTurmas(List<Turma> turmas) {
+        this.turmas = turmas;
     }
-
-
-
-
 }

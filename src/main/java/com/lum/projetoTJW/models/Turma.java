@@ -4,16 +4,15 @@ import javax.persistence.*;
 import java.util.List;
 @Entity
 @Table(name = "tb_turma")
-public class Turma {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Turma {    @Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
     @Column(name = "nome_turma")
     private String nomeTurma;
 
-//    @OneToMany(mappedBy = "turma")
-//    private List<Aluno> alunos;
+    @ManyToMany(mappedBy = "turmas")
+    private List<Aluno> alunos;
 
     @ManyToOne
     @JoinColumn(name = "professor_id")
@@ -22,11 +21,11 @@ public class Turma {
     public Turma(){
 
     }
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,13 +37,13 @@ public class Turma {
         this.nomeTurma = nomeTurma;
     }
 
-//    public List<Aluno> getAlunos() {
-//        return alunos;
-//    }
-//
-//    public void setAlunos(List<Aluno> alunos) {
-//        this.alunos = alunos;
-//    }
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
 
     public Professor getProfessor() {
         return professor;
@@ -53,10 +52,6 @@ public class Turma {
     public void setProfessor(Professor professor) {
         this.professor = professor;
     }
-
-
-
-
 
 
 }
