@@ -3,24 +3,21 @@ package com.lum.projetoTJW.models;
 import javax.persistence.*;
 import java.util.List;
 @Entity
-@Table(name = "tb_turma")
-public class Turma {    @Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-
-    @Column(name = "nome_turma")
-    private String nomeTurma;
-
-    @ManyToMany(mappedBy = "turmas")
-    private List<Aluno> alunos;
-
+public class Turma {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  Long id;
+    private String name;
+    private String details;
     @ManyToOne
     @JoinColumn(name = "professor_id")
     private Professor professor;
+    @ManyToMany
+    @JoinTable(name = "aluno_turma",
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name = "turma_id"))
+    private List<Aluno> alunos;
 
-    public Turma(){
-
-    }
     public Long getId() {
         return id;
     }
@@ -29,12 +26,28 @@ private Long id;
         this.id = id;
     }
 
-    public String getNomeTurma() {
-        return nomeTurma;
+    public String getName() {
+        return name;
     }
 
-    public void setNomeTurma(String nomeTurma) {
-        this.nomeTurma = nomeTurma;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 
     public List<Aluno> getAlunos() {
@@ -45,13 +58,10 @@ private Long id;
         this.alunos = alunos;
     }
 
-    public Professor getProfessor() {
-        return professor;
+    public Turma() {
     }
 
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
-    }
+
 
 
 }

@@ -4,36 +4,30 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_aluno")
 public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    private String name;
     private String email;
-
-    @ManyToMany
-    @JoinTable(name = "aluno_turma",
-            joinColumns = @JoinColumn(name = "aluno_id"),
-            inverseJoinColumns = @JoinColumn(name="turma_id"))
+    @ManyToMany(mappedBy = "alunos")
     private List<Turma> turmas;
-
-    public Aluno() {
-    }
     public Long getId() {
         return id;
+    }
+    public Aluno() {
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

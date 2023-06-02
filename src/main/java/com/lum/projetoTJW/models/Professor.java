@@ -3,17 +3,14 @@ package com.lum.projetoTJW.models;
 import javax.persistence.*;
 import java.util.List;
 @Entity
-@Table(name = "tb_professor")
 public class Professor {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    private String name;
     private String email;
-
-    public Professor() {
-    }
+    @OneToMany(mappedBy = "professor")
+    private List<Turma> turmas;
     public Long getId() {
         return id;
     }
@@ -22,12 +19,12 @@ public class Professor {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -38,8 +35,15 @@ public class Professor {
         this.email = email;
     }
 
+    public Professor() {
+    }
 
 
+    public List<Turma> getTurmas() {
+        return turmas;
+    }
 
-
+    public void setTurmas(List<Turma> turmas) {
+        this.turmas = turmas;
+    }
 }
