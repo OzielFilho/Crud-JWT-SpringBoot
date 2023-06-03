@@ -42,7 +42,15 @@ public class AlunoController {
     @GetMapping(value = "/{id}")
     public AlunoResponse findAlunoById(@PathVariable Long id){
         Aluno aluno =  repository.findById(id).get();
-        AlunoResponse alunoResponse = new AlunoResponse();
+        List<Turma> turmas = aluno.getTurmas();
+        List<TurmaResponse> turmasResponse = new ArrayList<TurmaResponse>();
+        turmas.forEach(turma -> {
+            Professor professor = turma.getProfessor();
+            ProfessorResponse professorResponse = new ProfessorResponse(professor.getName(),professor.getEmail(),null);
+            TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),professorResponse);
+            turmasResponse.add(turmaResponse);
+        });
+        AlunoResponse alunoResponse = new AlunoResponse(aluno.getName(),aluno.getEmail(),turmasResponse);
         return alunoResponse;
     }
 }
