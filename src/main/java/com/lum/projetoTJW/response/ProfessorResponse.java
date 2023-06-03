@@ -1,16 +1,21 @@
-package com.lum.projetoTJW.responses;
+package com.lum.projetoTJW.response;
+
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
 public class ProfessorResponse {
     private String name;
     private String email;
+
     private List<TurmaResponse> turmas;
+
     public ProfessorResponse(String name, String email, List<TurmaResponse> turmas) {
         this.name = name;
         this.email = email;
         this.turmas = turmas;
     }
+
     public String getName() {
         return name;
     }
@@ -34,6 +39,8 @@ public class ProfessorResponse {
     public void setTurmas(List<TurmaResponse> turmas) {
         this.turmas = turmas;
     }
+
+
 
 
 }

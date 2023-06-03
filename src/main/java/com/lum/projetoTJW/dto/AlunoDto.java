@@ -1,14 +1,9 @@
-package com.lum.projetoTJW.responses;
+package com.lum.projetoTJW.dto;
 
-import java.util.List;
-
-public class AlunoResponse {
+public class AlunoDto {
     private String name;
     private String email;
-    private List<TurmaResponse> turmas;
-    public AlunoResponse() {
-
-    }
+    private Long turmaId;
     public String getName() {
         return name;
     }
@@ -25,13 +20,12 @@ public class AlunoResponse {
         this.email = email;
     }
 
-    public List<TurmaResponse> getTurmas() {
-        return turmas;
+    public Long getTurmaId() {
+        return turmaId;
     }
 
-    public void setTurmas(List<TurmaResponse> turmas) {
-        this.turmas = turmas;
+    public void setTurmaId(Long turmaId) {
+        this.turmaId = turmaId;
     }
-
 
 }

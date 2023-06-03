@@ -1,21 +1,22 @@
-package com.lum.projetoTJW.models;
+package com.lum.projetoTJW.entity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Aluno {
+@Table(name = "professores")
+public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String email;
-    @ManyToMany(mappedBy = "alunos")
+    @OneToMany(mappedBy = "professor",fetch = FetchType.EAGER)
     private List<Turma> turmas;
     public Long getId() {
         return id;
-    }
-    public Aluno() {
     }
 
     public void setId(Long id) {
@@ -38,6 +39,7 @@ public class Aluno {
         this.email = email;
     }
 
+
     public List<Turma> getTurmas() {
         return turmas;
     }
@@ -45,4 +47,5 @@ public class Aluno {
     public void setTurmas(List<Turma> turmas) {
         this.turmas = turmas;
     }
+
 }
