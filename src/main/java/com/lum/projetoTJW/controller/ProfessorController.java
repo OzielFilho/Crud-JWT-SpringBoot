@@ -1,8 +1,10 @@
 package com.lum.projetoTJW.controller;
 
+import com.lum.projetoTJW.entity.Aluno;
 import com.lum.projetoTJW.entity.Professor;
 import com.lum.projetoTJW.entity.Turma;
 import com.lum.projetoTJW.repository.IProfessorRepository;
+import com.lum.projetoTJW.response.AlunoResponse;
 import com.lum.projetoTJW.response.ProfessorResponse;
 import com.lum.projetoTJW.response.TurmaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,13 @@ public class ProfessorController {
             List<Turma> turmas = professor.getTurmas();
             List<TurmaResponse> turmasResponse = new ArrayList<TurmaResponse>();
             turmas.forEach(turma -> {
-                TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),null);
+                List<Aluno> alunos = turma.getAlunos();
+                List<AlunoResponse> alunosResponse = new ArrayList<AlunoResponse>();
+                alunos.forEach(aluno1 -> {
+                    AlunoResponse alunoResponse = new AlunoResponse(aluno1.getName(),aluno1.getEmail(),null);
+                    alunosResponse.add(alunoResponse);
+                });
+                TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),null,alunosResponse);
                 turmasResponse.add(turmaResponse);
             });
 
@@ -44,7 +52,13 @@ public class ProfessorController {
         List<Turma> turmas = professor.getTurmas();
         List<TurmaResponse> turmasResponse = new ArrayList<TurmaResponse>();
         turmas.forEach(turma -> {
-            TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),null);
+            List<Aluno> alunos = turma.getAlunos();
+            List<AlunoResponse> alunosResponse = new ArrayList<AlunoResponse>();
+            alunos.forEach(aluno1 -> {
+                AlunoResponse alunoResponse = new AlunoResponse(aluno1.getName(),aluno1.getEmail(),null);
+                alunosResponse.add(alunoResponse);
+            });
+            TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),null,alunosResponse);
             turmasResponse.add(turmaResponse);
         });
 

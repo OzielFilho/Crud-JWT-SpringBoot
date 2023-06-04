@@ -1,10 +1,12 @@
 package com.lum.projetoTJW.controller;
 
 import com.lum.projetoTJW.dto.TurmaDto;
+import com.lum.projetoTJW.entity.Aluno;
 import com.lum.projetoTJW.entity.Professor;
 import com.lum.projetoTJW.entity.Turma;
 import com.lum.projetoTJW.repository.IProfessorRepository;
 import com.lum.projetoTJW.repository.ITurmaRepository;
+import com.lum.projetoTJW.response.AlunoResponse;
 import com.lum.projetoTJW.response.ProfessorResponse;
 import com.lum.projetoTJW.response.TurmaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +37,15 @@ public class TurmaController {
         List<Turma> turmas = (List<Turma>) repositoryTurma.findAll();
         List<TurmaResponse> turmasResponse =  new ArrayList<TurmaResponse>();
         turmas.forEach(turma -> {
+            List<Aluno> alunos = turma.getAlunos();
+            List<AlunoResponse> alunosResponse = new ArrayList<AlunoResponse>();
+            alunos.forEach(aluno1 -> {
+                AlunoResponse alunoResponse = new AlunoResponse(aluno1.getName(),aluno1.getEmail(),null);
+                alunosResponse.add(alunoResponse);
+            });
             Professor professor = turma.getProfessor();
             ProfessorResponse professorResponse = new ProfessorResponse(professor.getName(),professor.getEmail(),null);
-            TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),professorResponse);
+            TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),professorResponse,alunosResponse);
             turmasResponse.add(turmaResponse);
         });
         return turmasResponse;
@@ -45,9 +53,15 @@ public class TurmaController {
     @GetMapping(value = "/{id}")
     public TurmaResponse findProfessorById(@PathVariable Long id){
         Turma turma =  repositoryTurma.findById(id).get();
+        List<Aluno> alunos = turma.getAlunos();
+        List<AlunoResponse> alunosResponse = new ArrayList<AlunoResponse>();
+        alunos.forEach(aluno1 -> {
+            AlunoResponse alunoResponse = new AlunoResponse(aluno1.getName(),aluno1.getEmail(),null);
+            alunosResponse.add(alunoResponse);
+        });
         Professor professor = turma.getProfessor();
         ProfessorResponse professorResponse = new ProfessorResponse(professor.getName(),professor.getEmail(),null);
-        TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),professorResponse);
+        TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),professorResponse,alunosResponse);
         return turmaResponse;
     }
 }
