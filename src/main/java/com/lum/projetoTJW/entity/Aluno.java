@@ -14,7 +14,7 @@ public class Aluno {
     private String name;
     @Column(nullable = false)
     private String email;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "alunos_turmas",
             joinColumns = @JoinColumn(name = "aluno_id"),
             inverseJoinColumns = @JoinColumn(name = "turma_id"))

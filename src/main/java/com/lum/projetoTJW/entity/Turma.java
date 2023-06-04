@@ -18,7 +18,7 @@ public class Turma {
     @JoinColumn(name = "professor_id",nullable = false)
     private Professor professor;
 
-    @ManyToMany(mappedBy = "turmas")
+    @ManyToMany(mappedBy = "turmas",cascade = CascadeType.PERSIST)
     private List<Aluno> alunos;
 
     public Long getId() {

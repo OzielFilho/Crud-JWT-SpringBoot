@@ -9,6 +9,7 @@ import com.lum.projetoTJW.repository.IAlunoRepository;
 import com.lum.projetoTJW.repository.IProfessorRepository;
 import com.lum.projetoTJW.repository.ITurmaRepository;
 import com.lum.projetoTJW.response.AlunoResponse;
+import com.lum.projetoTJW.response.NewTurmaAlunoResponse;
 import com.lum.projetoTJW.response.ProfessorResponse;
 import com.lum.projetoTJW.response.TurmaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,15 @@ public class AlunoController {
             alunosResponse.add(alunoResponse);
         });
         return alunosResponse;
+    }
+
+    @PostMapping(value = "/addNewTurma")
+    public Long addNewTurmaInAluno(@RequestBody NewTurmaAlunoResponse newTurmaAlunoResponse){
+        Aluno aluno = repository.findById(newTurmaAlunoResponse.getIdAluno()).get();
+        Turma turma = repositoryTurma.findById(newTurmaAlunoResponse.getIdTurma()).get();
+        aluno.getTurmas().add(turma);
+        Aluno update  = repository.save(aluno);
+        return update.getId();
     }
 
     @GetMapping(value = "/{id}")
