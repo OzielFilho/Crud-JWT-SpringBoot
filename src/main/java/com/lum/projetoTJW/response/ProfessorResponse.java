@@ -1,7 +1,5 @@
 package com.lum.projetoTJW.response;
 
-import org.springframework.lang.Nullable;
-
 import java.util.List;
 
 public class ProfessorResponse {
@@ -39,8 +37,5 @@ public class ProfessorResponse {
     public void setTurmas(List<TurmaResponse> turmas) {
         this.turmas = turmas;
     }
-
-
-
 
 }

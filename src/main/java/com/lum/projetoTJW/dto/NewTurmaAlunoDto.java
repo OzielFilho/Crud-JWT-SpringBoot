@@ -1,11 +1,11 @@
-package com.lum.projetoTJW.response;
+package com.lum.projetoTJW.dto;
 
-public class NewTurmaAlunoResponse {
+public class NewTurmaAlunoDto {
 
     private Long idTurma;
     private Long idAluno;
 
-    public NewTurmaAlunoResponse(Long idTurma, Long idAluno) {
+    public NewTurmaAlunoDto(Long idTurma, Long idAluno) {
         this.idTurma = idTurma;
         this.idAluno = idAluno;
     }
