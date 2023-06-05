@@ -10,10 +10,14 @@ import com.lum.projetoTJW.response.AlunoResponse;
 import com.lum.projetoTJW.response.ProfessorResponse;
 import com.lum.projetoTJW.response.TurmaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping(value= "api/v1/turmas")
 public class TurmaController {
@@ -23,14 +27,18 @@ public class TurmaController {
     private IProfessorRepository repositoryProfessor;
 
     @PostMapping(value = "/create")
-    public Long create(@RequestBody TurmaDto turma){
-        Professor findProfessor = repositoryProfessor.findById(turma.getProfessorId()).get();
+    public ResponseEntity<Object> create(@RequestBody TurmaDto turma){
+        Optional findProfessor = repositoryProfessor.findById(turma.getProfessorId());
+        if(!(findProfessor.isPresent())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Professor não encontrado");
+        }
+        Professor professorGet = (Professor) findProfessor.get();
         Turma saveTurma = new Turma();
         saveTurma.setDescription(turma.getDescription());
-        saveTurma.setProfessor(findProfessor);
+        saveTurma.setProfessor(professorGet);
         saveTurma.setName(turma.getName());
         Turma savedTurma = repositoryTurma.save(saveTurma);
-        return savedTurma.getId();
+        return ResponseEntity.status(HttpStatus.CREATED).body("Turma Criada: "+savedTurma.getName());
     }
     @GetMapping
     public  List<TurmaResponse> findAllTurmas(){
@@ -51,17 +59,21 @@ public class TurmaController {
         return turmasResponse;
     }
     @GetMapping(value = "/{id}")
-    public TurmaResponse findProfessorById(@PathVariable Long id){
-        Turma turma =  repositoryTurma.findById(id).get();
-        List<Aluno> alunos = turma.getAlunos();
+    public ResponseEntity<Object> findProfessorById(@PathVariable Long id){
+        Optional turma =  repositoryTurma.findById(id);
+        if(!(turma.isPresent())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turma não encontrada");
+        }
+        Turma turmaGet = (Turma) turma.get();
+        List<Aluno> alunos = turmaGet.getAlunos();
         List<AlunoResponse> alunosResponse = new ArrayList<AlunoResponse>();
         alunos.forEach(aluno1 -> {
             AlunoResponse alunoResponse = new AlunoResponse(aluno1.getName(),aluno1.getEmail(),null);
             alunosResponse.add(alunoResponse);
         });
-        Professor professor = turma.getProfessor();
+        Professor professor = turmaGet.getProfessor();
         ProfessorResponse professorResponse = new ProfessorResponse(professor.getName(),professor.getEmail(),null);
-        TurmaResponse turmaResponse = new TurmaResponse(turma.getName(),turma.getDescription(),professorResponse,alunosResponse);
-        return turmaResponse;
+        TurmaResponse turmaResponse = new TurmaResponse(turmaGet.getName(),turmaGet.getDescription(),professorResponse,alunosResponse);
+        return ResponseEntity.status(HttpStatus.FOUND).body(turmaResponse);
     }
 }

@@ -10,10 +10,13 @@ import com.lum.projetoTJW.response.AlunoResponse;
 import com.lum.projetoTJW.response.ProfessorResponse;
 import com.lum.projetoTJW.response.TurmaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "api/v1/professores")
@@ -55,9 +58,13 @@ public class ProfessorController {
     }
 
     @GetMapping(value = "/{id}")
-    public ProfessorResponse findProfessorById(@PathVariable Long id) {
-        Professor professor = repository.findById(id).get();
-        List<Turma> turmas = professor.getTurmas();
+    public ResponseEntity<Object> findProfessorById(@PathVariable Long id) {
+        Optional professor = repository.findById(id);
+        if(!(professor.isPresent())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Professor não encontrado");
+        }
+        Professor professorGet = (Professor) professor.get();
+        List<Turma> turmas = professorGet.getTurmas();
         List<TurmaResponse> turmasResponse = new ArrayList<TurmaResponse>();
         turmas.forEach(turma -> {
             List<Aluno> alunos = turma.getAlunos();
@@ -71,17 +78,25 @@ public class ProfessorController {
             turmasResponse.add(turmaResponse);
         });
 
-        ProfessorResponse professorResponse = new ProfessorResponse(professor.getName(), professor.getEmail(),
+        ProfessorResponse professorResponse = new ProfessorResponse(professorGet.getName(), professorGet.getEmail(),
                 turmasResponse);
-        return professorResponse;
+        return ResponseEntity.status(HttpStatus.FOUND).body(professorResponse);
     }
 
     @PostMapping(value = "/addNewTurma")
-    public Long addNewTurmaInProfessor(@RequestBody NewTurmaProfessorDto newTurmaAlunoDto) {
-        Professor professor = repository.findById(newTurmaAlunoDto.getIdProfessor()).get();
-        Turma turma = repositoryTurma.findById(newTurmaAlunoDto.getIdTurma()).get();
-        professor.getTurmas().add(turma);
-        Professor update = repository.save(professor);
-        return update.getId();
+    public ResponseEntity<Object> addNewTurmaInProfessor(@RequestBody NewTurmaProfessorDto newTurmaAlunoDto) {
+        Optional professor = repository.findById(newTurmaAlunoDto.getIdProfessor());
+        if(!(professor.isPresent())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Professor não encontrado");
+        }
+        Optional turma = repositoryTurma.findById(newTurmaAlunoDto.getIdTurma());
+        if(!(turma.isPresent())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turma não encontrada");
+        }
+        Professor professorGet = (Professor) professor.get();
+        Turma turmaGet = (Turma) turma.get();
+        professorGet.getTurmas().add(turmaGet);
+        Professor update = repository.save(professorGet);
+        return ResponseEntity.ok("Nova Turma adicionada");
     }
 }
