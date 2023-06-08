@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +28,17 @@ public class TurmaController {
     private IProfessorRepository repositoryProfessor;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Object> create(@RequestBody TurmaDto turma){
-        Optional findProfessor = repositoryProfessor.findById(turma.getProfessorId());
-        if(!(findProfessor.isPresent())){
+    public Object create(TurmaDto turma){
+        Optional professor = repositoryProfessor.findById(turma.getProfessorId());
+        if(!(professor.isPresent())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Professor não encontrado");
         }
-        Professor professorGet = (Professor) findProfessor.get();
         Turma saveTurma = new Turma();
         saveTurma.setDescription(turma.getDescription());
-        saveTurma.setProfessor(professorGet);
+        saveTurma.setProfessor((Professor) professor.get());
         saveTurma.setName(turma.getName());
-        Turma savedTurma = repositoryTurma.save(saveTurma);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Turma Criada: "+savedTurma.getName());
+        repositoryTurma.save(saveTurma);
+        return new ModelAndView("redirect:/home");
     }
     @GetMapping
     public  List<TurmaResponse> findAllTurmas(){

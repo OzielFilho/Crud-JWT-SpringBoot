@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,19 +30,19 @@ public class AlunoController {
     private ITurmaRepository repositoryTurma;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Object> create(@RequestBody AlunoDto aluno){
-        Optional findTurma = repositoryTurma.findById(aluno.getTurmaId());
-        if(!(findTurma.isPresent())){
+    public Object create(AlunoDto aluno){
+        Optional turma = repositoryTurma.findById(aluno.getTurmaId());
+        if(!(turma.isPresent())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turma não encontrada");
         }
         List<Turma> turmas = new ArrayList<Turma>();
-        turmas.add((Turma) findTurma.get());
+        turmas.add((Turma) turma.get());
         Aluno saveAluno = new Aluno();
         saveAluno.setName(aluno.getName());
         saveAluno.setEmail(aluno.getEmail());
         saveAluno.setTurmas(turmas);
-        Aluno savedAluno = repository.save(saveAluno);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Aluno "+ savedAluno.getName() +" Criado");
+        repository.save(saveAluno);
+        return new ModelAndView("redirect:/home");
     }
 
     @GetMapping
@@ -64,7 +65,7 @@ public class AlunoController {
     }
 
     @PostMapping(value = "/addNewTurma")
-    public ResponseEntity<Object> addNewTurmaInAluno(@RequestBody NewTurmaAlunoDto newTurmaAlunoDto){
+    public Object addNewTurmaInAluno(NewTurmaAlunoDto newTurmaAlunoDto){
         Optional aluno = repository.findById(newTurmaAlunoDto.getIdAluno());
         if(!(aluno.isPresent())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aluno não encontrado");
@@ -77,7 +78,7 @@ public class AlunoController {
         Turma turmaGet = (Turma) turma.get();
         alunoGet.getTurmas().add(turmaGet);
         repository.save(alunoGet);
-        return ResponseEntity.ok("Nova Turma adicionada");
+        return new ModelAndView("redirect:/home");
     }
 
     @GetMapping(value = "/{id}")

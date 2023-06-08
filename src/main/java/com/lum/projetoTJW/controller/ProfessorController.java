@@ -1,6 +1,7 @@
 package com.lum.projetoTJW.controller;
 
 import com.lum.projetoTJW.dto.NewTurmaProfessorDto;
+import com.lum.projetoTJW.dto.ProfessorDto;
 import com.lum.projetoTJW.entity.Aluno;
 import com.lum.projetoTJW.entity.Professor;
 import com.lum.projetoTJW.entity.Turma;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,12 @@ public class ProfessorController {
     private ITurmaRepository repositoryTurma;
 
     @PostMapping(value = "/create")
-    public Professor create(@RequestBody Professor professor) {
-        return repository.save(professor);
+    public ModelAndView  create(ProfessorDto professor) {
+        Professor newProfessor = new Professor();
+        newProfessor.setEmail(professor.getEmail());
+        newProfessor.setName(professor.getName());
+        repository.save(newProfessor);
+        return new ModelAndView("redirect:/home");
     }
 
     @GetMapping
@@ -84,7 +90,7 @@ public class ProfessorController {
     }
 
     @PostMapping(value = "/addNewTurma")
-    public ResponseEntity<Object> addNewTurmaInProfessor(@RequestBody NewTurmaProfessorDto newTurmaAlunoDto) {
+    public Object addNewTurmaInProfessor(NewTurmaProfessorDto newTurmaAlunoDto) {
         Optional professor = repository.findById(newTurmaAlunoDto.getIdProfessor());
         if(!(professor.isPresent())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Professor não encontrado");
@@ -97,6 +103,6 @@ public class ProfessorController {
         Turma turmaGet = (Turma) turma.get();
         professorGet.getTurmas().add(turmaGet);
         Professor update = repository.save(professorGet);
-        return ResponseEntity.ok("Nova Turma adicionada");
+        return new ModelAndView("redirect:/home");
     }
 }

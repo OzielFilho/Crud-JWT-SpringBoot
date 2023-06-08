@@ -10,12 +10,12 @@ public class Turma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String name;
     @Column(nullable = true)
     private String description;
     @ManyToOne
-    @JoinColumn(name = "professor_id",nullable = false)
+    @JoinColumn(name = "professor_id",nullable = true)
     private Professor professor;
 
     @ManyToMany(mappedBy = "turmas",cascade = CascadeType.PERSIST)
