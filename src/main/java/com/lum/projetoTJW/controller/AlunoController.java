@@ -8,6 +8,7 @@ import com.lum.projetoTJW.repository.IAlunoRepository;
 import com.lum.projetoTJW.repository.ITurmaRepository;
 import com.lum.projetoTJW.response.AlunoResponse;
 import com.lum.projetoTJW.dto.NewTurmaAlunoDto;
+import com.lum.projetoTJW.dto.RemoveTurmaAluno;
 import com.lum.projetoTJW.response.ProfessorResponse;
 import com.lum.projetoTJW.response.TurmaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,32 @@ public class AlunoController {
         }
         Aluno alunoGet = (Aluno) aluno.get();
         Turma turmaGet = (Turma) turma.get();
+        List<Turma> turmas =  alunoGet.getTurmas();
+        if(turmas.contains(turmaGet)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turma já cadastrada");
+        }
         alunoGet.getTurmas().add(turmaGet);
+        repository.save(alunoGet);
+        return new ModelAndView("redirect:/home");
+    }
+    @PostMapping(value = "/removeTurmaAluno")
+    public Object removeTurmaAluno(RemoveTurmaAluno removeTurmaAluno){
+        System.out.println("ALuno "+removeTurmaAluno.getIdAluno());
+        Optional aluno = repository.findById(removeTurmaAluno.getIdAluno());
+        if(!(aluno.isPresent())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aluno não encontrado");
+        }
+        Optional turma = repositoryTurma.findById(removeTurmaAluno.getIdTurma());
+        if(!(turma.isPresent())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turma não encontrada");
+        }
+        Aluno alunoGet = (Aluno) aluno.get();
+        Turma turmaGet = (Turma) turma.get();
+        List<Turma> turmas =  alunoGet.getTurmas();
+        if(!turmas.contains(turmaGet)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turma não cadastrada");
+        }
+        alunoGet.getTurmas().remove(turmaGet);
         repository.save(alunoGet);
         return new ModelAndView("redirect:/home");
     }

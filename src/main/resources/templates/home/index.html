@@ -10,9 +10,12 @@
 </head>
 
 <body>
-  <h1>
-    Acadêmico
-  </h1>
+  <nav class="navbar navbar-light" style="background-color: #88f7ba;">
+    <a class="navbar-brand">
+      <img src="https://ifce.edu.br/prpi/documentos-1/semic/2018/logo-ifce-vertical.png/@@images/a8ec0f9c-0cbd-499c-a903-e034b8b8579e.png" width="120" height="80" class="d-inline-block align-center" alt="">
+      Acadêmico
+    </a>
+  </nav>
   <p>Projeto da disciplina de Tópicos em Java para Web</p>
   <h3>Professores</h3>
 
@@ -70,6 +73,8 @@
         <th scope="col">Email</th>
         <th scope="col">Turmas</th>
         <th scope="col">+</th>
+        <th scope="col">-</th>
+
       </tr>
       </thead>
       <tbody>
@@ -86,6 +91,9 @@
         <td>
           <button type="button" onclick="window.location.href = 'addNewTurmaAluno';" class="btn btn-light">Adicionar uma nova turma</button>
         </td>
+        <td>
+          <button type="button" onclick="window.location.href = 'removeTurmaAluno';" class="btn btn-light">Remover turma</button>
+        </td>
       </tr>
 
       </tbody>
@@ -94,7 +102,6 @@
     <button type="button" onclick="window.location.href = 'createProfessor';" class="btn btn-dark">Criar um Professor</button>
     <button type="button" onclick="window.location.href = 'createTurma';" class="btn btn-dark">Criar uma Turma</button>
     <button type="button" onclick="window.location.href = 'createAluno';" class="btn btn-dark">Criar um aluno</button>
-
 </body>
 
 </html>

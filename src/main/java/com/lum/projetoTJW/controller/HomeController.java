@@ -41,13 +41,13 @@ public class HomeController {
 		return "home/createProfessor";
 	}
 
+	@GetMapping("/removeTurmaAluno")
+	public String removeTurmaAluno() {
+		return "home/removeTurmaAluno";
+	}
 	@GetMapping("/addNewTurmaAluno")
 	public String addNewTurmaAluno() {
 		return "home/addNewTurmaAluno";
-	}
-	@GetMapping("/addNewTurmaProfessor")
-	public String addNewTurmaProfessor() {
-		return "home/addNewTurmaProfessor";
 	}
 
 	@GetMapping("/createAluno")

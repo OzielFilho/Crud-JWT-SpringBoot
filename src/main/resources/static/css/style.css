@@ -1,6 +1,15 @@
 body {
-  padding: 20px;
-  background-color: #f2d5b3;
+  padding: 10px;
+  background-color: #ffffff;
+  vertical-align: middle;
+  display: flexbox;
+}
+div {
+  padding: 20px 20px 0px 20px;
+  background-color: #ffffff;
+}
+nav{
+  padding: 0px 0px 0px 0px;
 }
 
 
