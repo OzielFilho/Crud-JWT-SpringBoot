@@ -105,4 +105,16 @@ public class ProfessorController {
         Professor update = repository.save(professorGet);
         return new ModelAndView("redirect:/home");
     }
+
+
+    @PostMapping("/remove")
+    public Object removeProfessor(Long id) {
+        Optional professorGet = repository.findById(id);
+        if(!(professorGet.isPresent())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Professor não encontrado");
+        }
+
+        repository.deleteById(id);
+        return new ModelAndView("redirect:/home");
+    }
 }

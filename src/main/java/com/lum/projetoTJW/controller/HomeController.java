@@ -40,6 +40,10 @@ public class HomeController {
 	public String createProfessor() {
 		return "home/createProfessor";
 	}
+	@GetMapping("/removeProfessor")
+	public String removeProfessor() {
+		return "home/removeProfessor";
+	}
 
 	@GetMapping("/removeTurmaAluno")
 	public String removeTurmaAluno() {

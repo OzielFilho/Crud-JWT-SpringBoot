@@ -25,6 +25,7 @@
       <th scope="col">Nome</th>
       <th scope="col">Email</th>
       <th scope="col">Turmas</th>
+      <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -35,6 +36,9 @@
         <p th:each="turma : ${professor.turmas}">
           <span th:text="${turma.name}">Turma</span>
         </p>
+      </td>
+      <td>
+        <button type="button" onclick="window.location.href = 'removeProfessor';" class="btn btn-light">Remover Professor</button>
       </td>
     </tr>
 
